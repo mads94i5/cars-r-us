@@ -42,7 +42,7 @@ public class DeveloperData implements ApplicationRunner {
         Map<String, String> member2phone = new HashMap<>();
         member2phone.put("mobile", "12345");
         member2phone.put("work", "45678");
-        member2.setPhone(member1phone);
+        member2.setPhone(member2phone);
         memberRepository.save(member2);
     }
 }
