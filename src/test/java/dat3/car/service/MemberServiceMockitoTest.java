@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -68,10 +69,23 @@ class MemberServiceMockitoTest {
 
     @Test
     void getMembers() {
+        Member m1 = new Member("m1", "m1@a.dk", "test12", "bb", "Olsen", "xx vej 34", "Lyngby", "2800");
+        Member m2 = new Member("m2", "m2@a.dk", "test12", "aa", "hansen", "xx vej 34", "Lyngby", "2800");
+
+        Mockito.when(memberRepository.findAll()).thenReturn(List.of(m1,m2));
+
+        List<MemberResponseDto> members = memberService.getMembers(false);
+        assertEquals(2,members.size());
     }
 
     @Test
     void getMember() {
+        Member m1 = new Member("m1", "m1@a.dk", "test12", "bb", "Olsen", "xx vej 34", "Lyngby", "2800");
+
+        Mockito.when(memberRepository.findByUsername("m1")).thenReturn(Optional.of(m1));
+
+        MemberResponseDto member = memberService.getMember("m1", false);
+        assertEquals("m1",member.getUsername());
     }
 
     @Test
@@ -86,17 +100,4 @@ class MemberServiceMockitoTest {
         assertEquals("m1@a.dk",response.getEmail());
     }
 
-
-
-    @Test
-    void setMemberRanking() {
-    }
-
-    @Test
-    void deleteMember() {
-    }
-
-    @Test
-    void updateMember() {
-    }
 }
