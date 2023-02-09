@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,5 +58,28 @@ class CarServiceMockitoTest {
         CarRequestDto carRequest = new CarRequestDto(c1);
         CarResponseDto carResponse = carService.addCar(carRequest);
         assertEquals("Tesla", carResponse.getBrand());
+    }
+
+    @Test
+    public void setCarBestDiscount() {
+        Long id = 1L;
+        int value = 10;
+        Car car = new Car();
+        Mockito.when(carRepository.findById(id)).thenReturn(Optional.of(car));
+
+        carService.setCarBestDiscount(id, value);
+
+        Mockito.verify(carRepository, Mockito.times(1)).findById(id);
+        Mockito.verify(carRepository, Mockito.times(1)).save(any(Car.class));
+        assertEquals(value, car.getBestDiscount());
+    }
+
+    @Test
+    public void deleteCar() {
+        Long id = 1L;
+
+        carService.deleteCar(id);
+
+        Mockito.verify(carRepository, Mockito.times(1)).deleteById(id);
     }
 }
