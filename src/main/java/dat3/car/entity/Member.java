@@ -11,11 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Entity
-
 @Getter
 @Setter
 @NoArgsConstructor
+
+@Entity
 public class Member {
     @Id
     private String username;

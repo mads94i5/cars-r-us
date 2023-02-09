@@ -23,8 +23,7 @@ public class DeveloperData implements ApplicationRunner {
         this.memberRepository = memberRepository;
     }
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+    private void makeTestData() {
         System.out.println("DeveloperData was run.");
         carRepository.save(new Car("Opel", "Cadet", 200, 15));
         carRepository.save(new Car("Dodge", "Viper", 400, 5));
@@ -44,5 +43,10 @@ public class DeveloperData implements ApplicationRunner {
         member2phone.put("work", "45678");
         member2.setPhone(member2phone);
         memberRepository.save(member2);
+    }
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        makeTestData();
     }
 }

@@ -7,14 +7,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Entity
-
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
+@Entity
 public class Car {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name="car_brand", length = 50, nullable = false)
     private String brand;
@@ -34,5 +36,11 @@ public class Car {
         this.model = model;
         this.pricePrDay = pricePrDay;
         this.bestDiscount = bestDiscount;
+    }
+
+    public Car(String brand, String model, double pricePrDay) {
+        this.brand = brand;
+        this.model = model;
+        this.pricePrDay = pricePrDay;
     }
 }
