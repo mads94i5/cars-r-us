@@ -1,5 +1,6 @@
 package dat3.car.entity;
 
+import dat3.security.entity.UserWithRoles;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,11 +17,9 @@ import java.util.Map;
 @NoArgsConstructor
 
 @Entity
-public class Member {
-    @Id
-    private String username;
-    private String email;
-    private String password;
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "USER_TYPE")
+public class Member extends UserWithRoles {
     private String firstName;
     private String lastName;
     @ElementCollection
@@ -34,16 +33,18 @@ public class Member {
     private String zip;
     private boolean approved;
     private int ranking;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Rental> rentals;
     @CreationTimestamp
     private LocalDateTime created;
     @UpdateTimestamp
-    private LocalDateTime lastEdited;
+    private LocalDateTime updated;
 
     public Member(String user, String password, String email,
                   String firstName, String lastName, String street, String city, String zip) {
-        this.username = user;
-        this.password= password;
-        this.email = email;
+        super(user, password, email);
         this.firstName = firstName;
         this.lastName = lastName;
         this.street = street;

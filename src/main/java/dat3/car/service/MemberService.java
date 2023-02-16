@@ -58,7 +58,17 @@ public class MemberService {
     }
 
     public ResponseEntity<Boolean> updateMember(MemberRequestDto body, String username) {
-        Member newMember = MemberRequestDto.getMemberEntity(body);
-        return memberRepository.update(username, newMember);
+
+        Member member = memberRepository.findByUsername(username).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Member with this ID does not exist"));
+
+        member.setFirstName(body.getFirstName());
+        member.setLastName(body.getLastName());
+        member.setEmail(body.getEmail());
+        member.setStreet(body.getStreet());
+        member.setZip(body.getZip());
+
+        memberRepository.save(member);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 }

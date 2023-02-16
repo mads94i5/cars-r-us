@@ -15,5 +15,4 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     void deleteByUsername(String username);
 
-    ResponseEntity<Boolean> update(String username, Member newMember);
 }

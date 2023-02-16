@@ -6,9 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -26,10 +26,16 @@ public class Car {
     private double pricePrDay;
     @Column(name="max_discount")
     private int bestDiscount;
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+    private List<Rental> rentals;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private RentalCompany rentalCompany;
     @CreationTimestamp
     private LocalDateTime created;
     @UpdateTimestamp
-    private LocalDateTime lastEdited;
+    private LocalDateTime updated;
 
     public Car(String brand, String model, double pricePrDay, int bestDiscount) {
         this.brand = brand;

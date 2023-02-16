@@ -4,8 +4,10 @@ import dat3.car.dto.CarRequestDto;
 import dat3.car.dto.CarResponseDto;
 import dat3.car.entity.Car;
 import dat3.car.repository.CarRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +51,16 @@ public class CarService {
     }
 
     public ResponseEntity<Boolean> updateCar(CarRequestDto body, Long id) {
-        Car car = CarRequestDto.getCarEntity(body);
-        return carRepository.update(id, car);
+
+
+        Car car = carRepository.findById(id).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Car with this ID does not exist"));
+
+        car.setBrand(body.getBrand());
+        car.setModel(body.getModel());
+        car.setPricePrDay(body.getPricePrDay());
+        carRepository.save(car);
+
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 }

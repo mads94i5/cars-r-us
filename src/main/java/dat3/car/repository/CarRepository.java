@@ -9,7 +9,5 @@ import java.util.Optional;
 public interface CarRepository extends JpaRepository<Car, Integer> {
     Optional<Car> findById(Long id);
 
-    ResponseEntity<Boolean> update(Long id, Car car);
-
     void deleteById(Long id);
 }
