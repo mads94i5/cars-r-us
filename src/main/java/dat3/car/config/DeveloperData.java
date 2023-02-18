@@ -2,42 +2,53 @@ package dat3.car.config;
 
 import dat3.car.entity.Car;
 import dat3.car.entity.Member;
+import dat3.car.entity.Reservation;
 import dat3.car.repository.CarRepository;
 import dat3.car.repository.MemberRepository;
+import dat3.car.repository.ReservationRepository;
+import dat3.car.service.ReservationService;
 import dat3.security.entity.Role;
 import dat3.security.entity.UserWithRoles;
 import dat3.security.repository.UserWithRolesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Configuration
 @EnableJpaRepositories(basePackages = {"dat3.security.repository", "dat3.car.repository"})
-@ComponentScan(basePackages = "dat3.security")
+@ComponentScan(basePackages = {"dat3.security", "dat3.car"})
 public class DeveloperData implements ApplicationRunner {
     final CarRepository carRepository;
 
     final MemberRepository memberRepository;
 
     final UserWithRolesRepository userWithRolesRepository;
+
+    final ReservationService reservationService;
     final String passwordUsedByAll = "test12";
 
-    public DeveloperData(CarRepository carRepository, MemberRepository memberRepository, UserWithRolesRepository userWithRolesRepository) {
+    public DeveloperData(CarRepository carRepository, MemberRepository memberRepository, UserWithRolesRepository userWithRolesRepository, ReservationRepository reservationRepository, @Autowired ReservationService reservationService) {
         this.carRepository = carRepository;
         this.memberRepository = memberRepository;
         this.userWithRolesRepository = userWithRolesRepository;
+        this.reservationService = reservationService;
     }
 
     private void makeTestData() {
-        System.out.println("DeveloperData was run.");
+        System.out.println("***************TEST DATA****************");
         carRepository.save(new Car("Opel", "Cadet", 200, 15));
         carRepository.save(new Car("Dodge", "Viper", 400, 5));
+
+        reservationService.reserveCar("user1", 1L, LocalDate.now());
+
 /*
         Member member1 = new Member("User1", "1234", "e@mail.com", "Firstname", "Lastname", "Kultorvet", "København", "1150");
         member1.setFavoriteCarColors(List.of("Rød", "Blå"));
@@ -87,8 +98,9 @@ public class DeveloperData implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        makeTestData();
+        System.out.println("DeveloperData was run.");
         setupUserWithRoleUsers();
+        makeTestData();
     }
 
 }

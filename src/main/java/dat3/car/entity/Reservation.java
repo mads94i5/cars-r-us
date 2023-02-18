@@ -2,7 +2,9 @@ package dat3.car.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -16,10 +18,17 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+    @CreationTimestamp
     private LocalDateTime reservationDate;
-    private LocalDateTime rentalDate;
-    @ManyToOne(cascade = CascadeType.ALL)
+    private LocalDate rentalDate;
+    @ManyToOne
     private Car car;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Member member;
+
+    public Reservation(Member member, Car car, LocalDate date) {
+        this.member = member;
+        this.car = car;
+        this.rentalDate = date;
+    }
 }

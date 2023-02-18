@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
@@ -26,27 +27,27 @@ public class Car {
     private double pricePrDay;
     @Column(name="max_discount")
     private int bestDiscount;
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-    private List<Reservation> reservations;
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-    private List<Rental> rentals;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private RentalCompany rentalCompany;
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
+    private List<Reservation> reservations = new ArrayList<>();
     @CreationTimestamp
     private LocalDateTime created;
     @UpdateTimestamp
     private LocalDateTime updated;
 
+
+
+    public void addReservation(Reservation reservation){
+        reservations.add(reservation);
+    }
+    public Car(String brand, String model, double pricePrDay) {
+        this.brand = brand;
+        this.model = model;
+        this.pricePrDay = pricePrDay;
+    }
     public Car(String brand, String model, double pricePrDay, int bestDiscount) {
         this.brand = brand;
         this.model = model;
         this.pricePrDay = pricePrDay;
         this.bestDiscount = bestDiscount;
-    }
-
-    public Car(String brand, String model, double pricePrDay) {
-        this.brand = brand;
-        this.model = model;
-        this.pricePrDay = pricePrDay;
     }
 }

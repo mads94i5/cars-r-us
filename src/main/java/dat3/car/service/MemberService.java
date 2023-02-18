@@ -27,13 +27,13 @@ public class MemberService {
     }
 
     public MemberResponseDto getMember(String username, boolean includeAll) {
-        Optional<Member> member = memberRepository.findByUsername(username);
+        Optional<Member> member = memberRepository.findById(username);
         List<MemberResponseDto> memberResponse = member.stream().map(m -> new MemberResponseDto(m, includeAll)).toList();
         return memberResponse.get(0);
     }
 
     public MemberResponseDto addMember(MemberRequestDto memberRequest) {
-        if(memberRepository.existsByUsername(memberRequest.getUsername())){
+        if(memberRepository.existsById(memberRequest.getUsername())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Member with this Username already exist");
         }
         if(memberRepository.existsByEmail(memberRequest.getEmail())){
@@ -45,7 +45,7 @@ public class MemberService {
     }
 
     public void setMemberRanking(String username, int value) {
-        Optional<Member> member = memberRepository.findByUsername(username);
+        Optional<Member> member = memberRepository.findById(username);
         if (member.isPresent()) {
             Member newMember = member.get();
             newMember.setRanking(value);
@@ -54,12 +54,12 @@ public class MemberService {
     }
 
     public void deleteMember(String username) {
-        memberRepository.deleteByUsername(username);
+        memberRepository.deleteById(username);
     }
 
     public ResponseEntity<Boolean> updateMember(MemberRequestDto body, String username) {
 
-        Member member = memberRepository.findByUsername(username).orElseThrow(() ->
+        Member member = memberRepository.findById(username).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Member with this ID does not exist"));
 
         member.setFirstName(body.getFirstName());
