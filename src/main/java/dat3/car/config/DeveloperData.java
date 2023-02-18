@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 @EnableJpaRepositories(basePackages = {"dat3.security.repository", "dat3.car.repository"})
@@ -47,7 +48,9 @@ public class DeveloperData implements ApplicationRunner {
         carRepository.save(new Car("Opel", "Cadet", 200, 15));
         carRepository.save(new Car("Dodge", "Viper", 400, 5));
 
-        reservationService.reserveCar("user1", 1L, LocalDate.now());
+        LocalDate date = LocalDate.now();
+        String formattedDate = date.format(DateTimeFormatter.ISO_DATE);
+        reservationService.reserveCar("user1", 1L, date);
 
 /*
         Member member1 = new Member("User1", "1234", "e@mail.com", "Firstname", "Lastname", "Kultorvet", "København", "1150");

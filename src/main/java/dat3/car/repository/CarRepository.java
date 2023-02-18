@@ -3,6 +3,7 @@ package dat3.car.repository;
 import dat3.car.entity.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,6 +19,6 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     List<Car> findAllWithBestDiscount();
     @Query("SELECT c FROM Car c WHERE c.reservations IS EMPTY")
     List<Car> findAllByReservationsIsEmpty();
-    @Query("SELECT c FROM Car c LEFT JOIN FETCH c.reservations res WHERE c.id = :carId AND (res IS EMPTY OR res.rentalDate <> :date)")
+    @Query("SELECT c FROM Car c LEFT JOIN c.reservations res WHERE c.id = :carId AND (res IS EMPTY OR res.rentalDate <> :date)")
     Optional<Car> findUnreservedCarById(Long carId, LocalDate date);
 }
