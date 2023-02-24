@@ -40,10 +40,6 @@ public class Member extends UserWithRoles {
     @UpdateTimestamp
     private LocalDateTime updated;
 
-    public void addReservation(Reservation reservation){
-        reservations.add(reservation);
-    }
-
     public Member(String user, String password, String email,
                   String firstName, String lastName, String street, String city, String zip) {
         super(user, password, email);
@@ -54,4 +50,7 @@ public class Member extends UserWithRoles {
         this.zip = zip;
     }
 
+    public void addReservation(Reservation reservation){
+        reservations.add(reservation);
+    }
 }

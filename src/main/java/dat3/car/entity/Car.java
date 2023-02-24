@@ -33,12 +33,6 @@ public class Car {
     private LocalDateTime created;
     @UpdateTimestamp
     private LocalDateTime updated;
-
-
-
-    public void addReservation(Reservation reservation){
-        reservations.add(reservation);
-    }
     public Car(String brand, String model, double pricePrDay) {
         this.brand = brand;
         this.model = model;
@@ -49,5 +43,9 @@ public class Car {
         this.model = model;
         this.pricePrDay = pricePrDay;
         this.bestDiscount = bestDiscount;
+    }
+
+    public void addReservation(Reservation reservation){
+        reservations.add(reservation);
     }
 }

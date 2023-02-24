@@ -50,7 +50,7 @@ public class DeveloperData implements ApplicationRunner {
 
         LocalDate date = LocalDate.now();
         String formattedDate = date.format(DateTimeFormatter.ISO_DATE);
-        reservationService.reserveCar("user1", 1L, date);
+        // reservationService.reserveCar("user1", 1L, date);
 
 /*
         Member member1 = new Member("User1", "1234", "e@mail.com", "Firstname", "Lastname", "Kultorvet", "København", "1150");
