@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/members")
+@RequestMapping("/api/members")
+@CrossOrigin
 public class MemberController {
     final MemberService memberService;
 
@@ -53,7 +54,4 @@ public class MemberController {
     void deleteMemberByUsername(@PathVariable String username) {
         memberService.deleteMember(username);
     }
-
-
-
 }

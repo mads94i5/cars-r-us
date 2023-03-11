@@ -59,7 +59,7 @@ class MemberServiceMockitoTest {
     void findMemberByUsername() {
         Member m1 = new Member("m1", "test12", "m1@a.dk", "bb", "Olsen", "xx vej 34", "Lyngby", "2800");
         m1.setCreated(LocalDateTime.now());
-        Mockito.when(memberRepository.findByUsername("m1")).thenReturn(java.util.Optional.of(m1));
+        Mockito.when(memberRepository.findById("m1")).thenReturn(java.util.Optional.of(m1));
 
         MemberResponseDto response = memberService.getMember("m1", true);
         assertEquals("m1@a.dk",response.getEmail());
@@ -82,7 +82,7 @@ class MemberServiceMockitoTest {
     void getMember() {
         Member m1 = new Member("m1", "m1@a.dk", "test12", "bb", "Olsen", "xx vej 34", "Lyngby", "2800");
 
-        Mockito.when(memberRepository.findByUsername("m1")).thenReturn(Optional.of(m1));
+        Mockito.when(memberRepository.findById("m1")).thenReturn(Optional.of(m1));
 
         MemberResponseDto member = memberService.getMember("m1", false);
         assertEquals("m1",member.getUsername());

@@ -83,7 +83,7 @@ public class SecurityConfig {
             //Required in order to use the h2-console
             .requestMatchers("/h2*/**").permitAll()
 
-            .requestMatchers("/").permitAll() //Allow for a default index.html file
+            .requestMatchers("/**").permitAll() //Allow for a default index.html file
 
 
             //necessary to allow for "nice" JSON Errors
@@ -95,6 +95,7 @@ public class SecurityConfig {
 
            // Demonstrates another way to add roles to an endpoint
            // .requestMatchers(HttpMethod.GET, "/api/demo/admin").hasAuthority("ADMIN")
+
     .anyRequest().authenticated());
 
     return http.build();

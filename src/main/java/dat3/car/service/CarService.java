@@ -32,9 +32,13 @@ public class CarService {
     }
 
     public CarResponseDto addCar(CarRequestDto carRequest) {
-        Car newCar = CarRequestDto.getCarEntity(carRequest);
-        newCar = carRepository.save(newCar);
-        return new CarResponseDto(newCar, false);
+        try {
+            Car newCar = CarRequestDto.getCarEntity(carRequest);
+            newCar = carRepository.save(newCar);
+            return new CarResponseDto(newCar, false);
+        } catch (Exception e) {
+            throw new RuntimeException("Error adding car: " + e.getMessage());
+        }
     }
 
     public void setCarBestDiscount(Long id, int value) {

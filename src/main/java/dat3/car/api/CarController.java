@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("api/cars")
+@RestController
+@RequestMapping("/api/cars")
+@CrossOrigin
 public class CarController {
 
     final CarService carService;
@@ -26,7 +28,7 @@ public class CarController {
 
     //Security Admin
     @GetMapping(path = "/{id}")
-    CarResponseDto getCarById(@PathVariable Long id) throws Exception {
+    CarResponseDto getCarById(@PathVariable Long id) {
         return carService.getCar(id, false);
     }
 
