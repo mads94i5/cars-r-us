@@ -99,5 +99,4 @@ class MemberServiceMockitoTest {
         MemberResponseDto response = memberService.addMember(request);
         assertEquals("m1@a.dk",response.getEmail());
     }
-
 }
