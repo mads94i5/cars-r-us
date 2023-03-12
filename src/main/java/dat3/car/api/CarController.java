@@ -19,7 +19,6 @@ public class CarController {
     public CarController(CarService carService) {
         this.carService = carService;
     }
-
     //Security Admin
     @GetMapping
     List<CarResponseDto> getCars(){
