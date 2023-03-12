@@ -1,5 +1,4 @@
 name: Build, Test and Deploy
-
 on:
   push:
     branches:
@@ -8,26 +7,21 @@ env:
   JDBC_DATABASE_URL: ${{ secrets.JDBC_DATABASE_URL }}
   JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
   JDBC_USERNAME: ${{ secrets.JDBC_USERNAME }}
-
 jobs:
   build:
-    runs-on: ubuntu-16.04
-
+    runs-on: ubuntu-22.04
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
     - name: Build with maven
       uses: actions/setup-java@v1
       with:
-        java-version: 8
-
+        java-version: 17
     - name: Build project
       run: |
         mvn -B -DskipTests clean install
   test:
-    runs-on: ubuntu-16.04
-
+    runs-on: ubuntu-22.04
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -35,20 +29,17 @@ jobs:
     - name: Set up JDK 17
       uses: actions/setup-java@v1
       with:
-        java-version: 8
-
+        java-version: 17
     - name: Run tests
       run: |
         mvn test
   deploy:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-22.04
     
     needs: [build, test]
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
     - name: Deploy to Ubuntu Server
       uses: appleboy/ssh-action@master
       with: 
