@@ -10,7 +10,7 @@ env:
   JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
   IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
   IMAGE_PORT: ${{ secrets.IMAGE_PORT }}
-  IMAGE_FILE: .tar
+  IMAGE_EXT: .tar
 
 jobs:
   build:
