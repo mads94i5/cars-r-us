@@ -5,7 +5,7 @@ on:
     branches:
       - main
 env:
-  JDBC_DATABASE: ${{ secrets.JDBC_DATABASE }}
+  JDBC_DATABASE_URL: ${{ secrets.JDBC_DATABASE_URL }}
   JDBC_USERNAME: ${{ secrets.JDBC_USERNAME }}
   JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
 
@@ -53,7 +53,7 @@ jobs:
         run: |
           IMAGE_TAG=mads-backend-client
           docker build -t $IMAGE_TAG \
-            --build-arg JDBC_DATABASE=$JDBC_DATABASE \
+            --build-arg JDBC_DATABASE_URL=$JDBC_DATABASE_URL \
             --build-arg JDBC_USERNAME=$JDBC_USERNAME \
             --build-arg JDBC_PASSWORD=$JDBC_PASSWORD \
             .
