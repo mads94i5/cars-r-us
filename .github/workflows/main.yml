@@ -8,9 +8,6 @@ env:
   JDBC_DATABASE: ${{ secrets.JDBC_DATABASE }}
   JDBC_USERNAME: ${{ secrets.JDBC_USERNAME }}
   JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
-  IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-  IMAGE_PORT: ${{ secrets.IMAGE_PORT }}
-  IMAGE_FILE: ${{ secrets.IMAGE_FILE }}
 
 jobs:
   build:
@@ -54,17 +51,18 @@ jobs:
 
       - name: Build and save Docker image
         run: |
-          docker build -t $IMAGE_NAME \
+          IMAGE_TAG=mads-backend-client
+          docker build -t $IMAGE_TAG \
             --build-arg JDBC_DATABASE=$JDBC_DATABASE \
             --build-arg JDBC_USERNAME=$JDBC_USERNAME \
             --build-arg JDBC_PASSWORD=$JDBC_PASSWORD \
             .
-          docker save $IMAGE_NAME > $IMAGE_FILE
+          docker save $IMAGE_TAG > mads-backend-client.tar
       - name: Upload image artifact
         uses: actions/upload-artifact@v2
         with:
-          name: $IMAGE_NAME
-          path: $IMAGE_FILE
+          name: mads-backend-client
+          path: mads-backend-client.tar
 
       - name: Copy Docker Image to Server
         uses: appleboy/scp-action@master
@@ -72,7 +70,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: $IMAGE_FILE
+          source: mads-backend-client.tar
           target: /root/containers/
 
       - name: Start new container using the new image
@@ -82,8 +80,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker stop $IMAGE_NAME
-            docker rm $IMAGE_NAME
-            docker load < /root/containers/$IMAGE_FILE
-            docker run -d --name $IMAGE_NAME -p $IMAGE_PORT:$IMAGE_PORT $IMAGE_NAME
+            docker stop mads-backend-client
+            docker rm mads-backend-client
+            docker load < /root/containers/mads-backend-client.tar
+            docker run -d --name mads-backend-client -p 8080:8080 mads-backend-client
             exit
