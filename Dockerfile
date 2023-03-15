@@ -1,19 +1,28 @@
-FROM openjdk:17-jdk-slim-bullseye
-FROM mysql:8.0.32
-# ENV JAVA_OPTS = "-Xmx256m -Xms128"
+# Base image
+FROM ubuntu:22.04
+
+# Define arguments
+ARG JDBC_DATABASE
+ARG JDBC_USERNAME
+ARG JDBC_PASSWORD
+
+# Set environment variables
+ENV JDBC_DATABASE $JDBC_DATABASE
+ENV JDBC_USERNAME $JDBC_USERNAME
+ENV JDBC_PASSWORD $JDBC_PASSWORD
+
+# Install OpenJDK 17 slim
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk-headless && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-RUN apt-get update && \
-    apt-get install -y maven
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
 
-#Next two lines ONLY for Windows users
-RUN apt-get update && apt-get install dos2unix
-RUN dos2unix mvnw
+COPY . .
 
-COPY src ./src
-RUN chmod +x mvnw && ./mvnw dependency:resolve
-RUN mvn clean package
+RUN chmod +x mvnw
+RUN ./mvnw package
+
 EXPOSE 8080
-CMD ["./mvnw", "spring-boot:run"]
+
+CMD ["sh", "-c", "java -jar target/car-0.0.1-SNAPSHOT.jar"]

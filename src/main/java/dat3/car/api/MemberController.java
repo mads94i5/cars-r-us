@@ -27,7 +27,7 @@ public class MemberController {
 
     //Security Admin
     @GetMapping(path = "/{username}")
-    MemberResponseDto getMemberById(@PathVariable String username) throws Exception {
+    MemberResponseDto getMemberById(@PathVariable String username) {
         return memberService.getMember(username, false);
     }
 
