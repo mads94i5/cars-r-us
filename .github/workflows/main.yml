@@ -10,7 +10,7 @@ env:
   JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
   IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
   IMAGE_PORT: ${{ secrets.IMAGE_PORT }}
-  IMAGE_EXT: .tar
+  IMAGE_FILE: ${{ secrets.IMAGE_FILE }}
 
 jobs:
   build:
@@ -59,12 +59,12 @@ jobs:
             --build-arg JDBC_USERNAME=$JDBC_USERNAME \
             --build-arg JDBC_PASSWORD=$JDBC_PASSWORD \
             .
-          docker save $IMAGE_NAME > ${IMAGE_NAME}${IMAGE_EXT}
+          docker save $IMAGE_NAME > $IMAGE_FILE
       - name: Upload image artifact
         uses: actions/upload-artifact@v2
         with:
           name: $IMAGE_NAME
-          path: ${IMAGE_NAME}${IMAGE_EXT}
+          path: $IMAGE_FILE
 
       - name: Copy Docker Image to Server
         uses: appleboy/scp-action@master
@@ -72,7 +72,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ${IMAGE_NAME}${IMAGE_EXT}
+          source: $IMAGE_FILE
           target: /root/containers/
 
       - name: Start new container using the new image
@@ -84,6 +84,6 @@ jobs:
           script: |
             docker stop $IMAGE_NAME
             docker rm $IMAGE_NAME
-            docker load < /root/containers/${IMAGE_NAME}${IMAGE_EXT}
+            docker load < /root/containers/$IMAGE_FILE
             docker run -d --name $IMAGE_NAME -p $IMAGE_PORT:$IMAGE_PORT $IMAGE_NAME
             exit
