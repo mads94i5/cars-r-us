@@ -22,7 +22,7 @@ public class CarController {
     //Security Admin
     @GetMapping
     List<CarResponseDto> getCars(){
-        return carService.getCars(false);
+        return carService.getCars(true);
     }
 
     //Security Admin
